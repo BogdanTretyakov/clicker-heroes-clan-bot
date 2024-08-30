@@ -1,0 +1,31 @@
+{
+  "name": "clicker-heroes-clan-bot",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "module": "./dist/app.mjs",
+  "exports": {
+    "import": {
+      "default": "./dist/app.mjs"
+    }
+  },
+  "scripts": {
+    "dev": "node --import=tsx ./src/app.ts",
+    "build": "pkgroll --clean-dist -m"
+  },
+  "devDependencies": {
+    "@types/node": "^22.5.1",
+    "@types/node-cron": "^3.0.11",
+    "pkgroll": "^2.4.2",
+    "tsx": "^4.19.0",
+    "typescript": "^5.5.3"
+  },
+  "dependencies": {
+    "axios": "^1.7.5",
+    "discord.js": "^14.15.3",
+    "dotenv": "^16.4.5",
+    "node-cron": "^3.0.3",
+    "sequelize": "^6.37.3",
+    "sqlite3": "^5.1.7"
+  }
+}
