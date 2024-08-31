@@ -1,10 +1,9 @@
 import cron from 'node-cron';
 import './environments.ts';
-import './discord.ts';
 import { clickerHeroesCallbacks } from './clickerHeroes/callbacks.ts';
 
 cron.schedule(
-  '0 */4 * * *',
+  '*/30 * * * *',
   clickerHeroesCallbacks.updateGuildInfo
 );
 

@@ -7,6 +7,7 @@ const keys = [
   'DISCORD_BOT_TOKEN',
   'DISCORD_GUILD_ID',
   'DISCORD_CHANNEL_ID',
+  'DISCORD_APPLICATION_ID',
 ] as const
 
 // @ts-expect-error

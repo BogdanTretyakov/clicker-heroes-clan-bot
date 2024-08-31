@@ -1,5 +1,6 @@
 import { Client, Events, GatewayIntentBits, TextChannel } from 'discord.js'
-import { env } from './environments';
+import { env } from '../environments';
+import { initDiscordCommands } from './init';
 
 const client = new Client({
   intents: [
@@ -15,6 +16,8 @@ client.once(Events.ClientReady, readyClient => {
 
 // Log in to Discord with your client's token
 await client.login(env.DISCORD_BOT_TOKEN);
+
+initDiscordCommands(client)
 
 const channel = await client.channels.fetch(env.DISCORD_CHANNEL_ID)
 

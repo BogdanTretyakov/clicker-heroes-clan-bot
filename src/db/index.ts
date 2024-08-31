@@ -21,6 +21,7 @@ await sequelize.authenticate()
 export class ClanMember extends Model {
   declare uid: string
   declare nickname: string
+  declare discordId: string
 }
 
 ClanMember.init(
@@ -31,9 +32,36 @@ ClanMember.init(
     },
     nickname: {
       type: DataTypes.STRING,
-    }
+    },
+    discordId: {
+      type: DataTypes.STRING,
+    },
   },
-  { sequelize }
+  { sequelize, paranoid: true }
 )
 
+export class ClanActivity extends Model {
+  declare uid: string
+  declare inactiveCount: number
+}
+
+ClanActivity.init(
+  {
+    uid: {
+      type: DataTypes.STRING,
+      primaryKey: true,
+    },
+    inactiveCount: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+    }
+  },
+  {
+    sequelize,
+  }
+)
+
+
 await sequelize.sync({ alter: true })
+
+export { sequelize as sequelizeInstance }
