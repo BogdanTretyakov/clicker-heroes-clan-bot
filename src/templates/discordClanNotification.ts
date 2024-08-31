@@ -18,7 +18,7 @@ export const discordClanNotification = ({ active, nonActive }: Props) => {
     output += activeFormatted
   }
   if (nonActiveFormatted.length) {
-    output += `**Non active members:**\n`
+    output += `\n\n**Non active members:**\n`
     output += nonActiveFormatted
   }
   return output
