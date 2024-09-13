@@ -1,20 +1,19 @@
+import './bootstrap.ts'
 import cron from 'node-cron';
-import './environments.ts';
-import { clickerHeroesCallbacks } from './clickerHeroes/callbacks.ts';
+import * as tasks from './tasks'
+import { createEachAccountRunner } from './tasks/utils.ts';
 
-cron.schedule(
-  '*/30 * * * *',
-  clickerHeroesCallbacks.updateGuildInfo
-);
-
-cron.schedule(
-  '50 23 * * *',
-  clickerHeroesCallbacks.postGuildStatistic,
-  { timezone: 'Etc/GMT' }
-);
-
-cron.schedule(
-  '5 0 * * *',
-  clickerHeroesCallbacks.autoFightBosses,
-  { timezone: 'Etc/GMT' }
-)
+Object.entries(tasks).forEach(([name, task]) => {
+  const { expression, runOnInit } = task
+  const callback = 'handler' in task ? createEachAccountRunner(task.handler) : task.rawHandler
+  cron.schedule(expression, callback, {
+    name,
+    timezone: 'Etc/GMT',
+    runOnInit,
+    recoverMissedExecutions: true,
+    scheduled: true,
+  })
+  if (runOnInit) {
+    callback('init');
+  }
+})

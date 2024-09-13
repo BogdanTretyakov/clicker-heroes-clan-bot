@@ -6,15 +6,14 @@ This is clan management helping bot for clicker heroes
 ## What it may do?
 - watching clan members activity and post statistic in Discord channel (at 23:50 GMT)
 - auto battle immortal raid (at 00:05 GMT)
+- auto battle legacy raid
+- auto clan management (accept requests, kicking members, etc)
+- manage settings for all of this functions
 
 ## What in plan to do?
-- auto battle legacy raid
-- auto level immortal class
-- refactor config (it messy for now, lol)
-- refactor to module system (making some functions optional)
+- ~~auto level immortal class~~ - not available with api
 - add telegram support
-- auto clan management (accept requests, kicking members, etc)
-- UX improvements
+- better connecting DB + default docker configs
 
 ## How to start it?
 
@@ -44,17 +43,13 @@ forever start ./dist/app.mjs
 
 ## Where to get `.env` values?
 
-#### `CLICKER_HEROES_UID` and `CLICKER_HEROES_UID`
-Put your save file in any save editor (no adv here). Values you need is under keys `uniqueId` and `passwordHash`
-
 #### `DISCORD_BOT_TOKEN` and `DISCORD_APPLICATION_ID`
 Create (or use existing) bot at [Discord Dev Portal](https://discord.com/developers/applications)
 
 General Information -> Application ID
 Bot -> Reset Token
 
-#### `DISCORD_GUILD_ID` and `DISCORD_CHANNEL_ID`
-Use [official Discord guide](https://support-dev.discord.com/hc/en-us/articles/360028717192-Where-can-I-find-my-Application-Team-Server-ID).
+#### `DISCORD_ADMINS_ID`
+Use [official Discord guide](https://support.discord.com/hc/en-us/articles/206346498-Where-can-I-find-my-User-Server-Message-ID#h_01HRSTXPS5H5D7JBY2QKKPVKNA).
 
-Guild ID is Server ID.
-Channel ID is ID of channel at this server, where notifications will send.
+There is list of user ID, separated by space, that can use bot. For other users bot will just do nothing

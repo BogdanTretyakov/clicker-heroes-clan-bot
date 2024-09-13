@@ -1,24 +1,20 @@
 import dotenv from 'dotenv'
 
 const keys = [
-  'CLICKER_HEROES_CLAN_NAME',
-  'CLICKER_HEROES_UID',
-  'CLICKER_HEROES_PASSWORD_HASH',
   'DISCORD_BOT_TOKEN',
-  'DISCORD_GUILD_ID',
-  'DISCORD_CHANNEL_ID',
   'DISCORD_APPLICATION_ID',
 ] as const
 
-// @ts-expect-error
-const processEnv: Record<typeof keys[number], string> = {}
+dotenv.config()
 
-dotenv.config({ processEnv })
-
-const isLostConfig = keys.some((key => !(key in processEnv) || !processEnv[key]))
+const isLostConfig = keys.some((key => !(key in process.env) || !process.env[key]))
 
 if (isLostConfig) {
   throw new Error('No config')
 }
 
-export { processEnv as env }
+export const env = {
+  DISCORD_BOT_TOKEN: process.env.DISCORD_BOT_TOKEN ?? '',
+  DISCORD_APPLICATION_ID: process.env.DISCORD_APPLICATION_ID ?? '',
+  DISCORD_ADMINS_ID: (process.env.DISCORD_ADMINS_ID ?? '').split(' ')
+}

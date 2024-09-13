@@ -1,19 +1,19 @@
 import { userMention } from "discord.js"
-import { MAX_CLICKER_HEROES_INACTIVE } from "../constants/clickerHeroes"
 
-interface TemplateUser {
+export interface TemplateUser {
   nickname: string,
   discordId?: string
 }
 
-type Props = Record<'active'|'nonActive'|'kickList', TemplateUser[]>
+type Props = Record<'active'|'nonActive'|'kickList'|'kicked', TemplateUser[]>
 
-export const discordClanNotification = ({ active, nonActive, kickList }: Props) => {
+export const discordClanNotification = ({ active, nonActive, kickList, kicked }: Props) => {
   const [
     activeFormatted,
     nonActiveFormatted,
-    kickListFormatted
-  ] = [active, nonActive, kickList].map((type, idx) => !!type.length
+    kickListFormatted,
+    kickedFormatted
+  ] = [active, nonActive, kickList, kicked].map((type, idx) => !!type.length
       ? type.map(({ nickname, discordId }) => {
         let output = `- ${nickname}`
         if (idx && discordId) {
@@ -34,9 +34,14 @@ export const discordClanNotification = ({ active, nonActive, kickList }: Props) 
     output += nonActiveFormatted
   }
   if (kickListFormatted.length) {
-    output += `\n\n**These guys were nonactive more, than ${MAX_CLICKER_HEROES_INACTIVE} days**`
+    output += `\n\n**These guys were nonactive**`
     output += '\n**Kick them!**\n'
     output += kickListFormatted
+  }
+  if (kickedFormatted.length) {
+    output += `\n\n**These guys were nonactive**`
+    output += '\n**And were be kicked from clan**\n'
+    output += kickedFormatted
   }
   return output
 }

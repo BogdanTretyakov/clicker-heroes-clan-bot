@@ -1,11 +1,11 @@
 import { dirname, resolve } from "path";
-import { Sequelize, DataTypes, Model } from "sequelize";
-import {fileURLToPath} from 'url';
+import { Sequelize, Transaction } from "sequelize";
+import { fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const dbPath = resolve(__dirname, 'database.sqlite');
 
-const storage = process.env.NODE_ENV === 'production' ? dbPath : ':memory:'
+const storage = process.env.NODE_ENV === 'production' || true ? dbPath : ':memory:'
 
 export const sequelize = new Sequelize({
   username: 'root',
@@ -13,55 +13,9 @@ export const sequelize = new Sequelize({
   host: 'localhost',
   dialect: 'sqlite',
   storage,
-  logging: process.env.NODE_ENV !== 'production'
+  logging: process.env.NODE_ENV !== 'production',
+  pool: {
+    max: 1,
+  },
+  transactionType: Transaction.TYPES.IMMEDIATE
 });
-
-await sequelize.authenticate()
-
-export class ClanMember extends Model {
-  declare uid: string
-  declare nickname: string
-  declare discordId: string
-}
-
-ClanMember.init(
-  {
-    uid: {
-      type: DataTypes.STRING,
-      primaryKey: true,
-    },
-    nickname: {
-      type: DataTypes.STRING,
-    },
-    discordId: {
-      type: DataTypes.STRING,
-    },
-  },
-  { sequelize, paranoid: true }
-)
-
-export class ClanActivity extends Model {
-  declare uid: string
-  declare inactiveCount: number
-}
-
-ClanActivity.init(
-  {
-    uid: {
-      type: DataTypes.STRING,
-      primaryKey: true,
-    },
-    inactiveCount: {
-      type: DataTypes.INTEGER,
-      defaultValue: 0,
-    }
-  },
-  {
-    sequelize,
-  }
-)
-
-
-await sequelize.sync({ alter: true })
-
-export { sequelize as sequelizeInstance }

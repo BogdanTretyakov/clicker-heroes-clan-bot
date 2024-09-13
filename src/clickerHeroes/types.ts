@@ -1,40 +1,38 @@
-export interface CHApiResponse<R extends Record<string, unknown>> {
-  result: R;
-  success: true;
-}
+type Timestamp = string
+type UID = string
 
 export interface GuildMember {
   chosenClass: string;
   classLevel: string;
   highestZone: string;
-  lastBonusRewardTimestamp: string;
-  lastRewardTimestamp: string;
+  lastBonusRewardTimestamp: Timestamp;
+  lastRewardTimestamp: Timestamp;
   nickname: string;
-  uid: string;
+  uid: UID;
 }
 
 export interface GuildInfo {
-  guild: {
+  guild: null | {
     autoJoin: boolean;
     currentNewRaidLevel: number;
     currentRaidLevel: string;
     guildMasterUid: string;
-    memberUids: Record<string | number, 'member' | 'request'>;
+    memberUids: Record<UID, 'member' | 'request'>;
     name: string;
     newRaidLocked: 'true' | 'false';
   };
-  guildMembers: Record<number, GuildMember>;
+  guildMembers?: Record<number, GuildMember>;
   user: {
     chosenClass: string;
     classLevel: string;
-    guildName: string;
+    guildName: string|null;
     highestZone: string;
     isGuildRequest: boolean;
-    lastBonusRewardTimestamp: string;
-    lastRewardTimestamp: string;
+    lastBonusRewardTimestamp: Timestamp;
+    lastRewardTimestamp: Timestamp;
     nickname: string;
     passwordHash: string;
-    uid: string;
+    uid: UID;
   };
 }
 
@@ -47,7 +45,23 @@ export interface RaidInfo {
     isBonusSuccessful: boolean;
     isSuccessful: boolean;
     level: string;
-    scores: Record<string, string>;
+    scores: Record<UID, string>;
     weakness: number;
   };
+}
+
+export interface LegacyRaidInfo {
+  raid: {
+    date: string;
+    guildName: string;
+    isSuccessful?: boolean;
+    level: string;
+    scores: Record<string, string>
+  };
+}
+
+
+export interface ClanMessages {
+  guildName: string;
+  messages: Record<`${Timestamp}.${string}`, `${UID};${string}`>
 }
